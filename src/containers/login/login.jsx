@@ -1,13 +1,22 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
+import { createTest1Action, createTest2Action } from '../../redux/actions/test';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './css/login.css'
 import logo from './images/logo.png'
 
-export default class Login extends Component {
+class Login extends Component {
+
+    componentDidMount() {
+        // 容器组件传来的props
+        console.log(this.props);
+    }
 
     onFinish = (values) => {
         console.log('用户名和密码正确', values);
+        // 容器组件传来的props
+        this.props.test1('***')
     };
     onFinishFailed = ({ values, errorFields, outOfDate }) => {
         alert('请输入正确的用户名和密码再登录!')
@@ -16,13 +25,13 @@ export default class Login extends Component {
     pwdValidator = (_, value) => {
         if (!value) {
             return Promise.reject(new Error('密码不能为空!'))
-        }else if(value.length < 4){
+        } else if (value.length < 4) {
             return Promise.reject(new Error('密码长度不能少于4位!'))
-        }else if(value.length > 12){
+        } else if (value.length > 12) {
             return Promise.reject(new Error('密码长度不能多于12位!'))
-        }else if(!(/^\w+$/).test(value)){
+        } else if (!(/^\w+$/).test(value)) {
             return Promise.reject(new Error('由字母、数字、下划线组成!'))
-        }else{
+        } else {
             return Promise.resolve();
         }
     }
@@ -31,7 +40,7 @@ export default class Login extends Component {
             <div className='login'>
                 <header>
                     <img src={logo} alt="logo" />
-                    <h1 className='h11'>管理系统</h1>
+                    <h1 className='h11'>管理系统{this.props.test}</h1>
                 </header>
                 <section>
                     <h1>用户登录</h1>
@@ -85,3 +94,11 @@ export default class Login extends Component {
         )
     }
 }
+
+export default connect(
+    state => ({ test: state.test }),
+    {
+        test1: createTest1Action,
+        test2: createTest2Action,
+    }
+)(Login)
