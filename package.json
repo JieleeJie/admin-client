@@ -39,7 +39,9 @@
   "devDependencies": {
     "@craco/craco": "^6.1.2",
     "antd": "^4.15.5",
+    "axios": "^0.21.1",
     "babel-plugin-import": "^1.13.3",
+    "nprogress": "^0.2.0",
     "react-redux": "^7.2.4",
     "redux": "^4.1.0",
     "redux-devtools-extension": "^2.13.9",

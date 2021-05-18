@@ -1,25 +1,34 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { createTest1Action, createTest2Action } from '../../redux/actions/test';
-import { Form, Input, Button, Checkbox } from 'antd';
+import {Redirect} from 'react-router-dom';
+import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { reqLogin } from '../../api';
+import { createSaveUserInfoAction } from '../../redux/actions/login';
 import './css/login.css'
 import logo from './images/logo.png'
 
 class Login extends Component {
 
-    componentDidMount() {
-        // 容器组件传来的props
-        console.log(this.props);
-    }
+    // componentDidMount() {
+    //     // 容器组件传来的props
+    //     console.log(this.props);
+    // }
 
-    onFinish = (values) => {
-        console.log('用户名和密码正确', values);
-        // 容器组件传来的props
-        this.props.test1('***')
+    onFinish = async (values) => {
+        const { username, password } = values
+        let result = await reqLogin(username, password)
+        const { status, data, msg } = result
+        if (status === 0) {
+            // 保存用户信息到redux,并跳转到管理员页面(顺序不能颠倒)
+            this.props.saveUserInfo(data)
+            this.props.history.replace('/admin')
+        } else {
+            message.warn(msg, 2)
+        }
     };
     onFinishFailed = ({ values, errorFields, outOfDate }) => {
-        alert('请输入正确的用户名和密码再登录!')
+        alert('用户名和密码格式不正确!')
     }
 
     pwdValidator = (_, value) => {
@@ -36,11 +45,14 @@ class Login extends Component {
         }
     }
     render() {
+        if(this.props.isLogin){
+            return <Redirect to='/admin'/>
+        }
         return (
             <div className='login'>
                 <header>
                     <img src={logo} alt="logo" />
-                    <h1 className='h11'>管理系统{this.props.test}</h1>
+                    <h1 className='h11'>管理系统</h1>
                 </header>
                 <section>
                     <h1>用户登录</h1>
@@ -96,9 +108,8 @@ class Login extends Component {
 }
 
 export default connect(
-    state => ({ test: state.test }),
+    state => ({isLogin:state.userInfo.isLogin}),
     {
-        test1: createTest1Action,
-        test2: createTest2Action,
+        saveUserInfo: createSaveUserInfoAction,
     }
 )(Login)
