@@ -5,9 +5,15 @@ import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { reqLogin } from '../../api';
 import { createSaveUserInfoAction } from '../../redux/actions/login';
-import './css/login.css'
+import './css/login.less'
 import logo from './images/logo.png'
 
+@connect(
+    state => ({isLogin:state.userInfo.isLogin}),
+    {
+        saveUserInfo: createSaveUserInfoAction,
+    }
+)
 class Login extends Component {
 
     // componentDidMount() {
@@ -107,9 +113,4 @@ class Login extends Component {
     }
 }
 
-export default connect(
-    state => ({isLogin:state.userInfo.isLogin}),
-    {
-        saveUserInfo: createSaveUserInfoAction,
-    }
-)(Login)
+export default Login

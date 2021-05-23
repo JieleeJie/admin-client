@@ -1,9 +1,9 @@
 import axios from 'axios';
 import qs from 'querystring'
-import { message } from 'antd';
-// 进度条效果nprogress
-import NProgress from 'nprogress';  
+import NProgress from 'nprogress';  // 精度他效果
 import 'nprogress/nprogress.css'
+import { message } from 'antd';
+import store from '../redux/store';
 
 const instance = axios.create({
     timeout: 3000,
@@ -14,6 +14,10 @@ instance.interceptors.request.use(function (config) {
     // console.log('**********');
     // console.log(config);
     NProgress.start();
+    // 从redux中获取之前所保存的token, 因为redux存于内存，而localStorage存于硬盘，速度快点
+    let token = store.getState().userInfo.token
+    //向请求头中添加token，用于校验身份
+    if(token) config.headers.Authorization = 'atguigu_' + token
     const { method, data } = config
     if (method.toLowerCase() === 'post') {
         if (data instanceof Object) {
