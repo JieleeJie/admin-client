@@ -42,10 +42,13 @@
     "antd": "^4.15.5",
     "axios": "^0.21.1",
     "craco-antd": "^1.19.0",
+    "dayjs": "^1.10.4",
+    "jsonp": "^0.2.1",
     "nprogress": "^0.2.0",
     "react-redux": "^7.2.4",
     "redux": "^4.1.0",
     "redux-devtools-extension": "^2.13.9",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "screenfull": "^5.1.0"
   }
 }

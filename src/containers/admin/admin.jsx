@@ -2,9 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { createDeleteUserInfoAction } from '../../redux/actions/login';
-// import { reqCategoryList } from '../../api'
 import { Layout } from 'antd';
-import './css/admin.less'
+import './admin.less'
 import Header from './header/header'
 import Home from '../../components/home/home'
 import Category from '../category/category'
@@ -31,6 +30,7 @@ class Admin extends Component {
         // 清除了redux中关于登录的信息后，state改变了会重新渲染页面，判断为没登录，<Redirect to='login'/>
     }
 
+
     render() {
         const { isLogin } = this.props.userInfo
         if (!isLogin) {
@@ -54,7 +54,9 @@ class Admin extends Component {
                                 <Route path='/admin/chart/line' component={Line}/>
                             </Switch>
                         </Content>
-                        <Footer className='footer'>建议使用谷歌浏览器，以获得最佳体验</Footer>
+                        <Footer className='footer'>
+                            建议使用谷歌浏览器，以获得最佳体验
+                        </Footer>
                     </Layout>
                 </Layout>
             </>
