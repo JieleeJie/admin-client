@@ -56,12 +56,15 @@ class Header extends PureComponent {
         }
     }
 
+    // 退出登录
     logOut = () => {
         let deleteUserInfo = this.props.deleteUserInfo
         confirm({
             title: '确定退出吗?',
             icon: <ExclamationCircleOutlined />,
             content: '退出需要重新登录',
+            cancelText:'取消',
+            okText:'确定',
             onOk() {
                 // 避免this问题，需提前取出
                 deleteUserInfo()

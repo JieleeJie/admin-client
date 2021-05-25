@@ -5,8 +5,8 @@ import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { reqLogin } from '../../api';
 import { createSaveUserInfoAction } from '../../redux/actions/login';
-import './css/login.less'
-import logo from './images/logo.png'
+import './login.less'
+import logo from '../../static/images/logo.png'
 
 @connect(
     state => ({isLogin:state.userInfo.isLogin}),

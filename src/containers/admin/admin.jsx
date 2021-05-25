@@ -5,6 +5,7 @@ import { createDeleteUserInfoAction } from '../../redux/actions/login';
 import { Layout } from 'antd';
 import './admin.less'
 import Header from './header/header'
+import LeftNav from './left_nav/left_nav'
 import Home from '../../components/home/home'
 import Category from '../category/category'
 import Product from '../product/product'
@@ -34,12 +35,14 @@ class Admin extends Component {
     render() {
         const { isLogin } = this.props.userInfo
         if (!isLogin) {
-            return <Redirect to='login' />
+            return <Redirect to='/login' />
         }
         return (
             <>
                 <Layout className='admin'>
-                    <Sider className='sider'>Sider</Sider>
+                    <Sider className='sider'>
+                        <LeftNav />
+                    </Sider>
                     <Layout>
                         <Header>Header</Header>
                         <Content className='content'>
