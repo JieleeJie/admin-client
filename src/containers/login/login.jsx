@@ -28,7 +28,7 @@ class Login extends Component {
         if (status === 0) {
             // 保存用户信息到redux,并跳转到管理员页面(顺序不能颠倒)
             this.props.saveUserInfo(data)
-            this.props.history.replace('/admin')
+            this.props.history.replace('/admin/home')
         } else {
             message.warn(msg, 2)
         }
@@ -52,7 +52,7 @@ class Login extends Component {
     }
     render() {
         if(this.props.isLogin){
-            return <Redirect to='/admin'/>
+            return <Redirect to='/admin/home'/>
         }
         return (
             <div className='login'>

@@ -11,9 +11,9 @@ const { SubMenu, Item } = Menu;
 @withRouter
 class LeftNav extends PureComponent {
 
-    // componentDidMount(){
-    //     console.log(this.props.location.pathname.split('/').splice(2));
-    // }
+    componentDidMount(){
+        console.log(this.props.location.pathname.split('/').reverse()[0]);
+    }
 
     createMenuList = (menuList) => {
         return menuList.map((cur) => {
@@ -47,7 +47,7 @@ class LeftNav extends PureComponent {
                     <h1>CSU管理系统</h1>
                 </div>
                 <Menu
-                    defaultSelectedKeys={[defaultSelectedKeys]}
+                    defaultSelectedKeys={defaultSelectedKeys}
                     defaultOpenKeys={defaultOpenKeys}
                     mode="inline"
                     theme="dark"
