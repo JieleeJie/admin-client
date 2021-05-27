@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Card, Button, Input, Select, Table, message } from 'antd'
 import { PlusCircleOutlined, SearchOutlined } from '@ant-design/icons';
-import { reqProductList, requpdateStatus,reqSearchProduct } from '../../api'
+import { reqProductList, requpdateStatus, reqSearchProduct } from '../../api'
 import { PAGE_SIZE } from '../../config'
 
 const { Option } = Select;
@@ -22,7 +22,13 @@ export default class Product extends PureComponent {
 
     // 获取商品列表
     getProductList = async (pageNum = 1) => {
-        let result = await reqProductList(pageNum, PAGE_SIZE)
+        let result = {}
+        if (this.isSearch) {
+            const { searchType, searchKeyword } = this.state
+            result = await reqSearchProduct(pageNum, PAGE_SIZE, searchType, searchKeyword)
+        } else {
+            result = await reqProductList(pageNum, PAGE_SIZE)
+        }
         const { data, status } = result
         if (status === 0) {
             this.setState({
@@ -58,11 +64,10 @@ export default class Product extends PureComponent {
     }
 
     // 商品搜索
-    search = async() => {
-        const { searchType, searchKeyword } = this.state
-        // console.log(searchType, searchKeyword);
-        let result = await reqSearchProduct(1,PAGE_SIZE,searchType, searchKeyword)
-        console.log(result);
+    search = async () => {
+        //TODO: 测试搜索空的api
+        this.isSearch = true
+        this.getProductList()
     }
 
     render() {
