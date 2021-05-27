@@ -34,7 +34,7 @@ class Login extends Component {
         }
     };
     onFinishFailed = ({ values, errorFields, outOfDate }) => {
-        alert('用户名和密码格式不正确!')
+        message.warning('用户名和密码格式不正确!',2)
     }
 
     pwdValidator = (_, value) => {

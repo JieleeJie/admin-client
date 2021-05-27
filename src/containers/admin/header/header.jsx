@@ -1,18 +1,19 @@
 import React, { PureComponent } from 'react'
 import { Button, Modal } from 'antd';
+import { FullscreenOutlined, FullscreenExitOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux'
-import {withRouter} from 'react-router-dom'  // withRouter 非路由组件使用路由组件api
+import { withRouter } from 'react-router-dom'  // withRouter 非路由组件使用路由组件api
 import screenfull from 'screenfull'
 import dayjs from 'dayjs'
-import {reqWeatherInfo} from '../../../api'
+import { reqWeatherInfo } from '../../../api'
 import { createDeleteUserInfoAction } from '../../../redux/actions/login'
-import { FullscreenOutlined, FullscreenExitOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import menuList from '../../../config/menu-config'
 import './header.less'
 
 const { confirm } = Modal;
 
 @connect(
-    state => ({ userInfo: state.userInfo }),
+    state => ({ userInfo: state.userInfo, title: state.title }),
     { deleteUserInfo: createDeleteUserInfoAction }
 )
 @withRouter
@@ -20,12 +21,8 @@ class Header extends PureComponent {
     state = {
         isFullScreen: false,
         dateAndTime: dayjs().format('YYYY年MM月DD日 HH:mm:ss'),
-        weatherInfo:{}
-    }
-
-    getWeatherInfo = async() => {
-        let weatherInfo =  await reqWeatherInfo()
-        this.setState({weatherInfo})
+        weatherInfo: {},
+        title: ''
     }
 
     componentDidMount() {
@@ -38,14 +35,16 @@ class Header extends PureComponent {
             });
         }
         // 更新日期时间
-        this.dateAndTimeId =  setInterval(() => {
-            this.setState({dateAndTime: dayjs().format('YYYY年MM月DD日 HH:mm:ss')})
+        this.dateAndTimeId = setInterval(() => {
+            this.setState({ dateAndTime: dayjs().format('YYYY年MM月DD日 HH:mm:ss') })
         }, 1000);
         // 天气信息
         this.getWeatherInfo()
+        //展示当前菜单名称
+        this.getTitle()
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         clearInterval(this.dateAndTimeId)
     }
 
@@ -56,6 +55,12 @@ class Header extends PureComponent {
         }
     }
 
+    // 天气信息
+    getWeatherInfo = async () => {
+        let weatherInfo = await reqWeatherInfo()
+        this.setState({ weatherInfo })
+    }
+
     // 退出登录
     logOut = () => {
         let deleteUserInfo = this.props.deleteUserInfo
@@ -63,8 +68,8 @@ class Header extends PureComponent {
             title: '确定退出吗?',
             icon: <ExclamationCircleOutlined />,
             content: '退出需要重新登录',
-            cancelText:'取消',
-            okText:'确定',
+            cancelText: '取消',
+            okText: '确定',
             onOk() {
                 // 避免this问题，需提前取出
                 deleteUserInfo()
@@ -73,8 +78,25 @@ class Header extends PureComponent {
         });
     }
 
+    // 获取 当前所处路由页面 名称
+    getTitle = () => {
+        let path = this.props.location.pathname
+        let pathTitle = ''
+        menuList.forEach(cur => {
+            if (cur.children instanceof Array) {
+                // TODO:这儿也存在问题，只遍历了两层，若是多级菜单呢？
+                // 得到二级菜单中的名称
+                let temp = cur.children.find(item => path === item.path)
+                if (temp) pathTitle = temp.title
+            } else {
+                if (path === cur.path) pathTitle = cur.title
+            }
+        })
+        this.setState({ title: pathTitle })
+    }
+
     render() {
-        let {isFullScreen,dateAndTime,weatherInfo} = this.state
+        let { isFullScreen, dateAndTime, weatherInfo } = this.state
         let { username } = this.props.userInfo.user
         return (
             <header className='header'>
@@ -84,7 +106,9 @@ class Header extends PureComponent {
                     <Button type='link' onClick={this.logOut}>退出</Button>
                 </div>
                 <div className="heander-bottom">
-                    <div className='header-bottom-left'>{this.props.location.pathname}</div>
+                    <div className='header-bottom-left'>
+                        {this.props.title || this.state.title}
+                    </div>
                     <div className="header-bottom-right">
                         {dateAndTime}&nbsp;&nbsp;
                         {weatherInfo.city}&nbsp;&nbsp;

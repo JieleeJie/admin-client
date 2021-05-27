@@ -9,3 +9,7 @@ export const WEATHER_KEY = 'a6d3177db95de950f3e09af73abec3d2'
 
 //当前城市名
 export const CITY = '430100' 
+
+//表格每页展示条数
+export const PAGE_SIZE = 5
+

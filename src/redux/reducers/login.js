@@ -8,7 +8,7 @@ let initState = {
     token: token || '',
     isLogin: user && token ? true : false
 }
-export default function test(preState = initState, action) {
+export default function loginReducer(preState = initState, action) {
     const { type, data } = action
     // 不能在此处对data进行解构，因为初始化时data为undefined
     let newState

@@ -10,7 +10,8 @@ export default class App extends PureComponent {
                 <Switch>
                     <Route path='/admin' component={Admin}/>
                     <Route path='/login' component={Login}/>
-                    <Redirect to='/admin'/>
+                    {/* to='/admin/home' 而不是 to='/admin' 是为了匹配到/home而在header.jsx中显示标题“首页” */}
+                    <Redirect to='/admin/home'/>
                 </Switch>
             </Fragment>
         )

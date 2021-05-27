@@ -52,9 +52,9 @@ class Admin extends Component {
                                 <Route path='/admin/prod_about/product' component={Product}/>
                                 <Route path='/admin/user' component={User}/>
                                 <Route path='/admin/role' component={Role}/>
-                                <Route path='/admin/chart/bar' component={Bar}/>
-                                <Route path='/admin/chart/pie' component={Pie}/>
-                                <Route path='/admin/chart/line' component={Line}/>
+                                <Route path='/admin/charts/bar' component={Bar}/>
+                                <Route path='/admin/charts/pie' component={Pie}/>
+                                <Route path='/admin/charts/line' component={Line}/>
                             </Switch>
                         </Content>
                         <Footer className='footer'>

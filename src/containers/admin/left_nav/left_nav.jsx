@@ -1,25 +1,34 @@
 import React, { PureComponent } from 'react'
-import { Link,withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
 import { Menu } from 'antd';
 import { MenuFoldOutlined, PieChartOutlined } from '@ant-design/icons';
+import { createSaveTitleAction } from '../../../redux/actions/menu'
 import logo2 from '../../../static/images/logo2.png'
 import './left_nav.less'
 import menuList from '../../../config/menu-config'
 
 const { SubMenu, Item } = Menu;
 
+@connect(
+    state => ({}),
+    {
+        saveTitle: createSaveTitleAction
+    }
+)
 @withRouter
 class LeftNav extends PureComponent {
 
-    componentDidMount(){
-        console.log(this.props.location.pathname.split('/').reverse()[0]);
-    }
+    // componentDidMount(){
+    //     console.log(this.props);
+    // }
 
+    // 创建左侧菜单栏列表
     createMenuList = (menuList) => {
         return menuList.map((cur) => {
             // TODO:icon无法动态匹配
             // let curIcon = '<PieChartOutlined />'
-            if (cur.children) {
+            if (cur.children instanceof Array) {
                 return (
                     <SubMenu key={cur.key} icon={<MenuFoldOutlined />} title={cur.title}>
                         {this.createMenuList(cur.children)}
@@ -27,14 +36,14 @@ class LeftNav extends PureComponent {
                 )
             } else {
                 return (
-                    <Item key={cur.key} icon={<PieChartOutlined />}>
+                    <Item key={cur.key} icon={<PieChartOutlined />} onClick={() => this.props.saveTitle(cur.title)}>
                         <Link to={cur.path}>{cur.title}</Link>
                     </Item>
                 )
             }
         })
     }
-
+    
     render() {
         // 载入页面时默认选中的菜单
         let defaultSelectedKeys = this.props.location.pathname.split('/').reverse()[0]
