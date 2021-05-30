@@ -67,3 +67,11 @@ export const reqSearchProduct = (pageNum, pageSize, searchType, searchKeyword) =
         [searchType]: searchKeyword
     }
 })
+// 根据商品ID获取商品
+export const reqDetailProd = (detailProdId) => myAxios({
+    method: 'GET',
+    url: `${BASE_URL}/api1/manage/product/info`,
+    params: {
+        productId:detailProdId
+    }
+})

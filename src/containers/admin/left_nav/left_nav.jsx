@@ -43,12 +43,14 @@ class LeftNav extends PureComponent {
             }
         })
     }
-    
+
     render() {
-        // 载入页面时默认选中的菜单
-        let defaultSelectedKeys = this.props.location.pathname.split('/').reverse()[0]
+        let pathname = this.props.location.pathname
+        // 载入页面时默认选中的菜单      
+        // 如果地址栏路径中含有product则一直选中product(商品管理)，解决了查看详情、添加商品时left_nav没有选中效果。这并不是完美的解决方案，若含有production就会出错
+        let selectedKeys = pathname.indexOf('product') !== -1 ? 'product' : pathname.split('/').reverse()[0]
         // 载入页面时默认打开的多级菜单
-        let defaultOpenKeys = this.props.location.pathname.split('/').splice(2)
+        let defaultOpenKeys = pathname.split('/').splice(2)
         return (
             <div >
                 <div className='nav-header'>
@@ -56,7 +58,7 @@ class LeftNav extends PureComponent {
                     <h1>CSU管理系统</h1>
                 </div>
                 <Menu
-                    defaultSelectedKeys={defaultSelectedKeys}
+                    selectedKeys={selectedKeys}
                     defaultOpenKeys={defaultOpenKeys}
                     mode="inline"
                     theme="dark"

@@ -1,4 +1,4 @@
-import { SAVE_TITLE } from '../constant';
+import { SAVE_TITLE,DELETE_TITLE } from '../constant';
 
 let initState = ''
 export default function menuReducer(preState = initState, action) {
@@ -7,6 +7,9 @@ export default function menuReducer(preState = initState, action) {
     switch (type) {
         case SAVE_TITLE:
             newState = data
+            return newState
+        case DELETE_TITLE:
+            newState = ''
             return newState
         default:
             return preState

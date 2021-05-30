@@ -7,6 +7,7 @@ import screenfull from 'screenfull'
 import dayjs from 'dayjs'
 import { reqWeatherInfo } from '../../../api'
 import { createDeleteUserInfoAction } from '../../../redux/actions/login'
+import { createDeleteTitleInfoAction } from '../../../redux/actions/menu'
 import menuList from '../../../config/menu-config'
 import './header.less'
 
@@ -14,7 +15,10 @@ const { confirm } = Modal;
 
 @connect(
     state => ({ userInfo: state.userInfo, title: state.title }),
-    { deleteUserInfo: createDeleteUserInfoAction }
+    {
+        deleteUserInfo: createDeleteUserInfoAction,
+        deleteTitleInfo: createDeleteTitleInfoAction
+    }
 )
 @withRouter
 class Header extends PureComponent {
@@ -64,6 +68,7 @@ class Header extends PureComponent {
     // 退出登录
     logOut = () => {
         let deleteUserInfo = this.props.deleteUserInfo
+        let deleteTitleInfo = this.props.deleteTitleInfo
         confirm({
             title: '确定退出吗?',
             icon: <ExclamationCircleOutlined />,
@@ -73,26 +78,34 @@ class Header extends PureComponent {
             onOk() {
                 // 避免this问题，需提前取出
                 deleteUserInfo()
+                deleteTitleInfo()
             },
             onCancel() { },
         });
     }
 
-    // 获取 当前所处路由页面 名称
+    // 获取 当前所处路由页面对应的标题名
     getTitle = () => {
-        let path = this.props.location.pathname
-        let pathTitle = ''
+        let title = ''
+        let pathname = this.props.location.pathname
+        // 如果是product下的路径，如/product/detail/xxID 标题直接显示product对应的标题即可，因为没有设计三级菜单的标题
+        // 直接this.setState({ title:"商品管理" })也是可以的，但有点写死的感觉
+        if(pathname.indexOf('product') !== -1){
+            pathname = '/admin/prod_about/product'
+        }
+        // 拿到地址栏路径到menuList中匹配对应的title
         menuList.forEach(cur => {
             if (cur.children instanceof Array) {
-                // TODO:这儿也存在问题，只遍历了两层，若是多级菜单呢？
                 // 得到二级菜单中的名称
-                let temp = cur.children.find(item => path === item.path)
-                if (temp) pathTitle = temp.title
+                // TODO:这儿存在问题，只遍历了两层，没考虑多级菜单
+                let temp = cur.children.find(item => pathname === item.path)
+                if (temp) title = temp.title
             } else {
-                if (path === cur.path) pathTitle = cur.title
+                // 得到一级菜单中的名称
+                if (pathname === cur.path) title = cur.title
             }
         })
-        this.setState({ title: pathTitle })
+        this.setState({ title })
     }
 
     render() {

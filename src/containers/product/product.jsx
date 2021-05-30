@@ -1,19 +1,28 @@
 import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
 import { Card, Button, Input, Select, Table, message } from 'antd'
 import { PlusCircleOutlined, SearchOutlined } from '@ant-design/icons';
+import { createSaveProductListAction } from '../../redux/actions/product'
 import { reqProductList, requpdateStatus, reqSearchProduct } from '../../api'
 import { PAGE_SIZE } from '../../config'
 
 const { Option } = Select;
 
-export default class Product extends PureComponent {
+@connect(
+    state => ({}),
+    {
+        saveProdList: createSaveProductListAction
+    }
+)
+class Product extends PureComponent {
 
     state = {
         productList: [],
         total: '',   // 数据总数
         current: 1,  // 当前所在页
         searchType: 'productName',
-        searchKeyword: ''
+        searchKeyword: '',
+        isLoading: true
     }
 
     componentDidMount() {
@@ -29,6 +38,7 @@ export default class Product extends PureComponent {
         } else {
             result = await reqProductList(pageNum, PAGE_SIZE)
         }
+        this.setState({ isLoading: false })
         const { data, status } = result
         if (status === 0) {
             this.setState({
@@ -36,6 +46,7 @@ export default class Product extends PureComponent {
                 total: data.total,
                 current: pageNum    //current:data.pageNum 是一样的 data.pageNum就是前台传给服务器的
             })
+            this.props.saveProdList(data.list)
         } else {
             message.error('获取商品列表失败', 2)
         }
@@ -65,7 +76,7 @@ export default class Product extends PureComponent {
 
     // 商品搜索
     search = async () => {
-        //TODO: 测试搜索空的api
+        //不能将isSearch维护到state中，因为setState是异步的
         this.isSearch = true
         this.getProductList()
     }
@@ -120,11 +131,13 @@ export default class Product extends PureComponent {
                 key: 'operation',
                 width: '10%',
                 align: 'center',
-                render: () => {
+                render: (_, record) => {
                     return (
                         <>
-                            <Button type='link'>详情</Button><br />
-                            <Button type='link'>修改</Button>
+                            {/* 传递不同的参数:params参数(只传递_id) 和 state参数(传递该商品信息) */}
+                            <Button type='link' onClick={() => {this.props.history.push(`/admin/prod_about/product/detail/${record._id}`)}}>详情</Button><br />
+                            {/* <Button type='link' onClick={() => { this.props.history.push({ pathname: '/admin/prod_about/product/detail', state: record }) }}>详情</Button><br /> */}
+                            <Button type='link' onClick={() => { this.props.history.push('/admin/prod_about/product/add_update/1234') }}>修改</Button>
                         </>
                     )
                 }
@@ -146,10 +159,11 @@ export default class Product extends PureComponent {
                                 <Button onClick={this.search} type='primary'><SearchOutlined />搜索</Button>
                             </>
                         }
-                        extra={<Button type='primary'><PlusCircleOutlined />添加商品</Button>}
+                        extra={<Button type='primary' onClick={() => { this.props.history.push('/admin/prod_about/product/add_update') }}><PlusCircleOutlined />添加商品</Button>}
                     >
                         <Table
                             bordered
+                            loading={this.state.isLoading}
                             dataSource={dataSource}
                             columns={columns}
                             rowKey='_id'
@@ -167,3 +181,5 @@ export default class Product extends PureComponent {
         )
     }
 }
+
+export default Product

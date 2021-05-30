@@ -1,10 +1,18 @@
 import React, { PureComponent } from 'react'
+import {connect} from 'react-redux'
 import { Card, Button, Table, Modal, Form, Input, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import {createSaveCategoryListAction} from '../../redux/actions/category'
 import { reqCategoryList, reqAddCategory, reqUpdateCategory } from '../../api'
 import { PAGE_SIZE } from '../../config/'
 
-export default class Category extends PureComponent {
+@connect(
+    state => ({}),
+    {
+        saveCategoryList : createSaveCategoryListAction
+    }
+)
+ class Category extends PureComponent {
 
     state = {
         categoryList: [],       //商品分类列表
@@ -25,7 +33,14 @@ export default class Category extends PureComponent {
     getCategoryList = async () => {
         let categoryList = await reqCategoryList()
         this.setState({ isLoading: false })
-        this.setState({ categoryList: categoryList.data.reverse() })
+        const { status, data, msg } = categoryList
+        if (status === 0) {
+            this.setState({ categoryList: data.reverse() })
+            // 将分类列表存入redux，方便详情页获取分类名称
+            this.props.saveCategoryList(data)
+        } else {
+            message.error(msg, 2)
+        }
     }
 
     // 展示新增分类模态框
@@ -81,7 +96,7 @@ export default class Category extends PureComponent {
         const { status, data, msg } = result
         if (status === 0) {
             message.success('添加成功', 2)
-            this.setState({ categoryList: [data, ...this.state.categoryList],visible: false })
+            this.setState({ categoryList: [data, ...this.state.categoryList], visible: false })
             this.formRef.current.resetFields();
         }
         if (status === 1) {
@@ -130,7 +145,7 @@ export default class Category extends PureComponent {
                 <Modal
                     title={operationType === 'add' ? '添加分类' : '修改分类'}
                     visible={visible} destroyOnClose
-                    cancelText='取消'  onOk={this.handleOk}
+                    cancelText='取消' onOk={this.handleOk}
                     okText='确认' onCancel={this.handleCancel}>
                     <Form
                         name="basic"
@@ -154,3 +169,4 @@ export default class Category extends PureComponent {
         )
     }
 }
+export default Category
