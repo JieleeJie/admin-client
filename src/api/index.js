@@ -72,6 +72,18 @@ export const reqDetailProd = (detailProdId) => myAxios({
     method: 'GET',
     url: `${BASE_URL}/api1/manage/product/info`,
     params: {
-        productId:detailProdId
+        productId: detailProdId
     }
+})
+// //请求删除图片（根据图片唯一名删除）
+export const reqDeletePicture = (name) => myAxios({
+    method: 'POST',
+    url: `${BASE_URL}/api1/manage/img/delete`,
+    data: { name }
+})
+// //请求添加商品
+export const reqAddProduct = (prodObj) => myAxios({
+    method: 'POST',
+    url: `${BASE_URL}/api1/manage/product/add`,
+    data: { ...prodObj }
 })

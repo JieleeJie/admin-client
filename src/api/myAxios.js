@@ -38,7 +38,7 @@ instance.interceptors.response.use(function (response) {
     NProgress.done();
     // 若想查看error信息，最好通过debugger。控制台输出的error是通过加工的
     // debugger;
-    if (error.response.status && error.response.status === 401) {
+    if (error.response && error.response.status === 401) {
         // token失效或出错
         message.error('身份校验失败，请重新登录', 2)
         //分发一个删除用户信息的action

@@ -55,7 +55,7 @@ class Detail extends PureComponent {
         } else {
             this.getDetailProdByID(detailProdId)
         }
-        // 商品详情中只有分类id，需要显示分类名,通过分类id从服务器获取
+        // 商品详情中只有分类id，需要显示分类名,通过分类id从redux或者服务器获取
         let reduxCategoryList = this.props.categoryList
         if (reduxCategoryList.length) {
             let oneCategory = reduxCategoryList.find(cur => cur._id === this.categoryId)

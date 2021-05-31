@@ -33,7 +33,7 @@ class Login extends Component {
             message.warn(msg, 2)
         }
     };
-    onFinishFailed = ({ values, errorFields, outOfDate }) => {
+    onFinishFailed = () => {
         message.warning('用户名和密码格式不正确!',2)
     }
 
@@ -82,25 +82,24 @@ class Login extends Component {
                         >
                             <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="请输入用户名" />
                         </Form.Item>
+
                         <Form.Item
                             name="password"
                             rules={[{ validator: this.pwdValidator }]}
                         >
-                            <Input
+                            <Input.Password
                                 prefix={<LockOutlined className="site-form-item-icon" />}
                                 type="password"
                                 placeholder="请输入密码"
                             />
                         </Form.Item>
+
                         <Form.Item>
                             <Form.Item name="remember" valuePropName="checked" noStyle>
                                 <Checkbox>记住密码</Checkbox>
                             </Form.Item>
-
-                            {/* <a className="login-form-forgot" href="javascript:;">
-                                忘记密码？
-                            </a> */}
                         </Form.Item>
+                        
                         <Form.Item>
                             <Button type="primary" htmlType="submit" className="login-form-button">
                                 登 录
