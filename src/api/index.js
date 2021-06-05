@@ -87,3 +87,9 @@ export const reqAddProduct = (prodObj) => myAxios({
     url: `${BASE_URL}/api1/manage/product/add`,
     data: { ...prodObj }
 })
+// 请求更新商品
+export const reqUpdateProduct = (prodObj) => myAxios({
+    method: 'POST',
+    url: `${BASE_URL}/api1/manage/product/update`,
+    data: { ...prodObj }
+})

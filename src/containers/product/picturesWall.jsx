@@ -63,12 +63,20 @@ export default class PicturesWall extends PureComponent {
         this.setState({ fileList })
     };
 
-    // 父子传参 
     //从state → fileList提取出所有该商品对应的图片名字，构建一个数组，供新增商品按钮使用。
     getImgsName = () => {
         let imgsNameArr = []
         this.state.fileList.forEach(cur => imgsNameArr.push(cur.name))
         return imgsNameArr
+    }
+
+    // 修改商品信息时 可查看图片
+    setFileList = (imgsNameArr) => {
+        let fileList = []
+        imgsNameArr.forEach((cur, index) => {
+            fileList.push({ uid: -index, name: cur.name, url: `${BASE_URL}/api1/upload/${cur}` })
+        })
+        this.setState({fileList})
     }
 
     render() {

@@ -128,7 +128,7 @@ class Detail extends PureComponent {
                         <span className="prod-label">商品图片：</span>
                         {
                             this.state.imgs.map((item, index) => {
-                                return <img key={index} src={`${BASE_URL}/api1/upload/` + item} alt="商品图片" className='prod-detail' />
+                                return <img key={index} src={`${BASE_URL}/api1/upload/` + item} alt="商品图片" className='prod-detail' style={{'width':'200px'}}/>
                             })
                         }
                     </List.Item>

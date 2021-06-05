@@ -137,7 +137,7 @@ class Product extends PureComponent {
                             {/* 传递不同的参数:params参数(只传递_id) 和 state参数(传递该商品信息) */}
                             <Button type='link' onClick={() => {this.props.history.push(`/admin/prod_about/product/detail/${record._id}`)}}>详情</Button><br />
                             {/* <Button type='link' onClick={() => { this.props.history.push({ pathname: '/admin/prod_about/product/detail', state: record }) }}>详情</Button><br /> */}
-                            <Button type='link' onClick={() => { this.props.history.push('/admin/prod_about/product/add_update/1234') }}>修改</Button>
+                            <Button type='link' onClick={() => { this.props.history.push(`/admin/prod_about/product/add_update/${record._id}`) }}>修改</Button>
                         </>
                     )
                 }

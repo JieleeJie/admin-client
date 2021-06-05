@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw,ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
-// import htmlToDraft from 'html-to-draftjs';
+import htmlToDraft from 'html-to-draftjs';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 
@@ -23,6 +23,16 @@ export default class RichTextEditor extends Component {
         return draftToHtml(convertToRaw(editorState.getCurrentContent()))
     }
 
+    // 修改商品页 将后台返回的html数据展示出来
+    HTMLConvertToEditor = (html) => {
+        const contentBlock = htmlToDraft(html);
+        if (contentBlock) {
+            const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks)
+            const editorState = EditorState.createWithContent(contentState)
+            this.setState({editorState})
+        }
+    }
+
     render() {
         const { editorState } = this.state;
         return (
@@ -31,7 +41,7 @@ export default class RichTextEditor extends Component {
                     editorStyle={{
                         border: ' 1px solid gray',
                         paddingLeft: '10px',
-                        lineHeight: '10px',
+                        lineHeight: '20px',
                         minHeight: '200px'
                     }}
                     editorState={editorState}
