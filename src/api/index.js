@@ -75,13 +75,13 @@ export const reqDetailProd = (detailProdId) => myAxios({
         productId: detailProdId
     }
 })
-// //请求删除图片（根据图片唯一名删除）
+//请求删除图片（根据图片唯一名删除）
 export const reqDeletePicture = (name) => myAxios({
     method: 'POST',
     url: `${BASE_URL}/api1/manage/img/delete`,
     data: { name }
 })
-// //请求添加商品
+//请求添加商品
 export const reqAddProduct = (prodObj) => myAxios({
     method: 'POST',
     url: `${BASE_URL}/api1/manage/product/add`,
@@ -92,4 +92,21 @@ export const reqUpdateProduct = (prodObj) => myAxios({
     method: 'POST',
     url: `${BASE_URL}/api1/manage/product/update`,
     data: { ...prodObj }
+})
+// 请求新增角色
+export const reqAddRole = (roleName) => myAxios({
+    method: 'POST',
+    url: `${BASE_URL}/api1/manage/role/add`,
+    data: { roleName }
+})
+// 获取角色列表
+export const reqRoleList = () => myAxios({
+    method: 'GET',
+    url: `${BASE_URL}/api1/manage/role/list`,
+})
+// 更新角色(给角色设置权限)
+export const reqAuthRole = (roleObj) => myAxios({
+    method: 'POST',
+    url: `${BASE_URL}/api1/manage/role/update`,
+    data: { ...roleObj, auth_time: Date.now() }
 })
