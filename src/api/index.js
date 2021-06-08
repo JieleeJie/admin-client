@@ -110,3 +110,26 @@ export const reqAuthRole = (roleObj) => myAxios({
     url: `${BASE_URL}/api1/manage/role/update`,
     data: { ...roleObj, auth_time: Date.now() }
 })
+// 获取所有用户列表
+export const reqUserList = () => myAxios({
+    method: 'GET',
+    url: `${BASE_URL}/api1/manage/user/list`,
+})
+// 请求新增用户
+export const reqAddUser = (userObj) => myAxios({
+    method: 'POST',
+    url: `${BASE_URL}/api1/manage/user/add`,
+    data: { ...userObj }
+})
+// 更新用户
+export const reqUpateUser = (userObj) => myAxios({
+    method: 'POST',
+    url: `${BASE_URL}/api1/manage/user/update`,
+    data: { ...userObj }
+})
+// 删除用户
+export const reqDeleteUser = (userId) => myAxios({
+    method: 'POST',
+    url: `${BASE_URL}/api1/manage/user/delete`,
+    data: { userId }
+})

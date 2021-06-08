@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react'
 import { Card, Button, Table, Modal, Form, Input, message, Tree } from 'antd';
-import { UserAddOutlined } from '@ant-design/icons';
+import { UsergroupAddOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs'
 import { connect } from 'react-redux'
 import { reqAddRole, reqRoleList, reqAuthRole } from '../../api'
 import menuList from '../../config/menu-config'
+import {PAGE_SIZE} from '../../config'
 
 @connect(
     state => ({ auth_name: state.userInfo.user.username }),
@@ -19,6 +20,7 @@ class Role extends PureComponent {
         roleList: [],
         menuList,                   // menu菜单数据，用于渲染 树结构
         checkedKeys: ['home'],
+        name:'',                    // 当前行的角色名称
         _id: ''
     };
 
@@ -58,16 +60,16 @@ class Role extends PureComponent {
     // 新增角色输入正确
     onFinish = async (values) => {
         const result = await reqAddRole(values.rolename)
-        const { status, msg } = result
+        const { status, msg, data } = result
         if (status === 0) {
             message.success('创建角色成功', 2)
-            // 1. 不向服务器请求，通过state来刷新页面，但是存在显示时的新增不在第一个显示的问题
-            // let roleList = [...this.state.roleList]
-            // roleList.unshift(data)
-            // this.setState({ roleList: roleList });
+            // 1. 不向服务器请求，通过state来重新渲染页面
+            let roleList = [...this.state.roleList]
+            roleList.unshift(data)
+            this.setState({ roleList: roleList,AddRoleVisible: false });
             // 2. 直接向服务器请求
-            this.getRoleList()
-            this.setState({ AddRoleVisible: false });
+            // this.getRoleList()
+            // this.setState({ AddRoleVisible: false });
         } else {
             message.error(msg, 2)
         }
@@ -83,7 +85,7 @@ class Role extends PureComponent {
         const { roleList } = this.state
         let result = roleList.find(cur => cur._id === _id)
         if (result) {
-            this.setState({ checkedKeys: result.menus });
+            this.setState({ checkedKeys: result.menus,name:result.name });
         }else{
             message.error('获取当前行数据错误',2)
         }
@@ -103,7 +105,7 @@ class Role extends PureComponent {
         const { status, msg } = result
         if (status === 0) {
             this.setState({ authVisible: false });
-            // 因为重新调用getRoleList，所以不需要从result中取出data，data返回的是当前角色的信息
+            // 因为重新调用getRoleList，所以不需要从result中取出data，data返回的是"当前"角色的所有信息
             this.getRoleList()
         } else {
             message.error(msg, 2)
@@ -122,7 +124,7 @@ class Role extends PureComponent {
 
 
     render() {
-        const { AddRoleVisible, roleList, authVisible, menuList, loading } = this.state
+        const { AddRoleVisible, roleList, authVisible, menuList, loading,checkedKeys,name } = this.state
 
         const dataSource = roleList
 
@@ -164,10 +166,10 @@ class Role extends PureComponent {
             <>
                 <Card title={
                     <Button type='primary' onClick={this.showAddModal}>
-                        <UserAddOutlined />创建角色
+                        <UsergroupAddOutlined />创建角色
                     </Button>
                 }>
-                    <Table dataSource={dataSource} columns={columns} rowKey='_id' pagination={{ pageSize: 5 }} loading={loading} />
+                    <Table dataSource={dataSource} columns={columns} rowKey='_id' pagination={{ pageSize:PAGE_SIZE }} loading={loading} />
                 </Card>
 
                 {/* 创建角色模态框 */}
@@ -198,9 +200,10 @@ class Role extends PureComponent {
                 <Modal title="设置角色权限" okText='确认' cancelText='取消'
                     visible={authVisible} onOk={this.handleAuthOk} onCancel={this.handleAuthCancel}
                 >
+                    <span>请为角色 <strong style={{fontSize:18}}>{name}</strong> 设置权限</span>
                     <Tree
                         checkable
-                        checkedKeys={this.state.checkedKeys}
+                        checkedKeys={checkedKeys}
                         onCheck={this.onCheck}
                         defaultExpandAll
                         treeData={treeData}

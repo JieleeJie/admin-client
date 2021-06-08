@@ -153,7 +153,6 @@ class AddAndUpdate extends PureComponent {
                         <Form.Item
                             label="商品描述"
                             name="desc"
-                            initialValue={this.state.desc}
                             rules={[
                                 { required: true, message: '请输入商品描述!' },
                             ]}
