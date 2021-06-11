@@ -4,7 +4,7 @@ export default class Home extends PureComponent {
     render() {
         return (
             <div>
-                Home
+                中南大学欢饮您
             </div>
         )
     }
