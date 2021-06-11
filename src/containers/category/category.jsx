@@ -19,7 +19,7 @@ import { PAGE_SIZE } from '../../config/'
         visible: false,         //控制弹窗的展示或隐藏
         operationType: '',      //操作类型（新增？修改？）
         isLoading: true,         //控制表格是否处于加载中
-        modalCurrentValue: {}    //模态框当前显示值（对象）
+        _id: ''                 //模态框当前显示分类的id
     }
 
     // 创建表单form的ref容器
@@ -46,8 +46,6 @@ import { PAGE_SIZE } from '../../config/'
     // 展示新增分类模态框
     showAddModal = () => {
         this.setState({
-            // 清空模态框当前值
-            modalCurrentValue: {},
             operationType: 'add',
             visible: true,
         });
@@ -55,23 +53,20 @@ import { PAGE_SIZE } from '../../config/'
     // 展示修改分类模态框
     showUpdateModal = (record) => {
         this.setState({
-            modalCurrentValue: record,
+            _id: record._id,
             operationType: 'update',
             visible: true,
         });
+        this.formRef.current.setFieldsValue({categoryName:record.name})
     };
-    //点击模态框ok按钮的回调
-    handleOk = () => {
-        // 触发表单提交
-        this.formRef.current.submit();
-    };
+
     //点击模态框cancle按钮的回调
     handleCancel = () => {
         this.setState({ visible: false });
         // 重置表单域
         this.formRef.current.resetFields();
-
     };
+
     // 提交表单且数据验证成功后回调事件
     onFinish = (values) => {
         const { operationType } = this.state
@@ -79,17 +74,12 @@ import { PAGE_SIZE } from '../../config/'
         if (operationType === 'update') {
             // 获取新的分类名，包装新对象
             let newCategoryName = values.categoryName
-            let categoryId = this.state.modalCurrentValue._id
+            let categoryId = this.state._id
             let categoryObj = { categoryId: categoryId, categoryName: newCategoryName }
             this.updateCategory(categoryObj)
         }
     };
-    // 提交表单且数据验证失败后回调事件
-    onFinishFailed = (errorInfo) => {
-        message.warning('请输入正确的商品分类名', 2)
-        // 不需重置表单域，保留输入框数据
-        return
-    };
+
     // 新增分类的具体实现
     addCategory = async (categoryName) => {
         let result = await reqAddCategory(categoryName)
@@ -103,6 +93,7 @@ import { PAGE_SIZE } from '../../config/'
             message.error(msg, 2)
         }
     }
+    
     // 修改分类的具体实现
     updateCategory = async (categoryObj) => {
         let result = await reqUpdateCategory(categoryObj)
@@ -144,8 +135,8 @@ import { PAGE_SIZE } from '../../config/'
                 </Card>
                 <Modal
                     title={operationType === 'add' ? '添加分类' : '修改分类'}
-                    visible={visible} destroyOnClose
-                    cancelText='取消' onOk={this.handleOk}
+                    visible={visible} forceRender
+                    cancelText='取消' onOk={() => {this.formRef.current.submit()}}
                     okText='确认' onCancel={this.handleCancel}>
                     <Form
                         name="basic"
@@ -153,13 +144,12 @@ import { PAGE_SIZE } from '../../config/'
                             remember: true,
                         }}
                         onFinish={this.onFinish}
-                        onFinishFailed={this.onFinishFailed}
+                        onFinishFailed={() => {message.warning('请输入正确的商品分类名', 2)}}
                         ref={this.formRef}
                     >
                         <Form.Item
                             name="categoryName"
                             rules={[{ required: true, message: '商品分类名不能为空!' }]}
-                            initialValue={this.state.modalCurrentValue.name}
                         >
                             <Input placeholder='请输入商品分类名' />
                         </Form.Item>
