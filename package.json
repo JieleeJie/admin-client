@@ -45,6 +45,8 @@
     "dayjs": "^1.10.4",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
+    "echarts": "^5.1.2",
+    "echarts-for-react": "^3.0.1",
     "html-to-draftjs": "^1.5.0",
     "jsonp": "^0.2.1",
     "nprogress": "^0.2.0",
