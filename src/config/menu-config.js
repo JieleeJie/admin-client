@@ -2,7 +2,7 @@ let menuList =  [
   {
     title: '首页', // 菜单标题名称
     key: 'home', // 对应的path
-    icon: '{<HomeOutlined />}', // 图标名称
+    icon: 'HomeOutlined', // 图标名称
     path: '/admin/home'//对应路径
   },
   {

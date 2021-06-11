@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Menu } from 'antd';
-import { MenuFoldOutlined, PieChartOutlined } from '@ant-design/icons';
+import  * as Icon from '@ant-design/icons';
 import { createSaveTitleAction } from '../../../redux/actions/menu'
 import logo2 from '../../../static/images/logo2.png'
 import './left_nav.less'
@@ -43,13 +43,13 @@ class LeftNav extends PureComponent {
             if (this.hasAuth(cur)) {
                 if (cur.children instanceof Array) {
                     pre.push (
-                        <SubMenu key={cur.key} icon={<MenuFoldOutlined />} title={cur.title}>
+                        <SubMenu key={cur.key} icon={React.createElement(Icon[cur.icon])} title={cur.title}>
                             {this.createMenuList(cur.children)}
                         </SubMenu>
                     )
                 }else {
                     pre.push (
-                        <Item key={cur.key} icon={<PieChartOutlined />} onClick={() => this.props.saveTitle(cur.title)}>
+                        <Item key={cur.key} icon={React.createElement(Icon[cur.icon])} onClick={() => this.props.saveTitle(cur.title)}>
                             <Link to={cur.path}>{cur.title}</Link>
                         </Item>
                     )
@@ -61,7 +61,7 @@ class LeftNav extends PureComponent {
 
     // 创建左侧菜单栏列表 
     // map 方法存在 if外层无返回值的问题
-    createMenuListByMap = (menuList) => {
+    /*createMenuListByMap = (menuList) => {
         return menuList.map((cur) => {
             if (this.hasAuth(cur)) {
                 // TODO:icon无法动态匹配
@@ -82,7 +82,7 @@ class LeftNav extends PureComponent {
             }
             return null
         })
-    }
+    }*/
 
     render() {
         let pathname = this.props.location.pathname
