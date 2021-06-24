@@ -55,7 +55,6 @@ export default class PicturesWall extends PureComponent {
         }
         if (file.status === 'removed') {
             let result = await reqDeletePicture(file.name)
-            console.log(result);
             const { status, msg } = result
             if (status === 0) message.success('删除图片成功', 2)
             else message.error(msg, 2)
@@ -74,7 +73,7 @@ export default class PicturesWall extends PureComponent {
     setFileList = (imgsNameArr) => {
         let fileList = []
         imgsNameArr.forEach((cur, index) => {
-            fileList.push({ uid: -index, name: cur.name, url: `${BASE_URL}/api1/upload/${cur}` })
+            fileList.push({ uid: -index, name: cur.name, url: `${BASE_URL}/upload/${cur}` })
         })
         this.setState({fileList})
     }
@@ -90,7 +89,7 @@ export default class PicturesWall extends PureComponent {
         return (
             <>
                 <Upload
-                    action={`${BASE_URL}/api1/manage/img/upload`}
+                    action={`${BASE_URL}/manage/img/upload`}
                     name="image"                      //发到后台的文件参数名,默认值为file，跟后台限制有关
                     // multiple                          //是否支持多选文件，开启后按住 ctrl 可选择多个文件，存在bug，见 我来 笔记
                     listType="picture-card"           //照片墙的展示方式
