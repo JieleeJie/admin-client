@@ -5,21 +5,21 @@ export default class Pie extends PureComponent {
 
     state = {
         data: [
-            { value: 40, name: '计算机学院' },
-            { value: 38, name: '湘雅公共卫生学院' },
-            { value: 32, name: '粉末冶金研究院' },
-            { value: 30, name: '交通工程学院' },
-            { value: 28, name: '航空航天学院' },
-            { value: 26, name: '体育教研部' },
-            { value: 22, name: '建筑与艺术学院' },
-            { value: 18, name: '材料科学与工程学院' }
+            { value: 40, name: '智能手机' },
+            { value: 38, name: 'IT书籍' },
+            { value: 32, name: '耳机音响' },
+            { value: 30, name: '女士护肤' },
+            { value: 28, name: '商务服饰' },
+            { value: 26, name: '办公用品' },
+            { value: 22, name: '洗护用品' },
+            { value: 18, name: '休闲零食' }
         ]
     }
 
     getOption = (pieChartData) => {
         return {
             title: {
-                text: '二级学院',
+                // text: '商品分类',
                 textVerticalAlign:'auto',
                 top:'center'
             },

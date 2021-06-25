@@ -95,7 +95,7 @@ class LeftNav extends PureComponent {
             <div >
                 <div className='nav-header'>
                     <img src={logo2} alt="logo" />
-                    <h1>CSU管理系统</h1>
+                    <h1>后台管理系统</h1>
                 </div>
                 <Menu
                     selectedKeys={selectedKeys}

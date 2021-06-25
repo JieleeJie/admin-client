@@ -14,6 +14,7 @@ import Role from '../role/role'
 import Bar from '../bar/bar'
 import Line from '../line/line'
 import Pie from '../pie/pie'
+import DashBoard from '../dash_board/dash_board'
 import Detail from '../product/detail'
 import AddAndUpdate from '../product/addAndUpdate'
 
@@ -64,11 +65,12 @@ class Admin extends Component {
                                 <Route path='/admin/charts/bar' component={Bar}/>
                                 <Route path='/admin/charts/pie' component={Pie}/>
                                 <Route path='/admin/charts/line' component={Line}/>
+                                <Route path='/admin/charts/dash_board' component={DashBoard}/>
                                 <Redirect to='/admin/home'/>
                             </Switch>
                         </Content>
                         <Footer className='footer'>
-                            建议使用谷歌浏览器，以获得最佳体验
+                            推荐使用谷歌浏览器，可以获得更加页面操作体验
                         </Footer>
                     </Layout>
                 </Layout>

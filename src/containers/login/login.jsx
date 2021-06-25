@@ -58,7 +58,7 @@ class Login extends Component {
             <div className='login'>
                 <header>
                     <img src={logo} alt="logo" />
-                    <h1 className='h11'>管理系统</h1>
+                    <h1 className='h11'>后台管理系统</h1>
                 </header>
                 <section>
                     <h1>用户登录</h1>

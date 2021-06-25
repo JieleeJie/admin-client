@@ -61,6 +61,12 @@ let menuList =  [
         icon: 'PieChartOutlined',
         path: '/admin/charts/pie'
       },
+      {
+        title: '仪表盘',
+        key:  'dashBoard',
+        icon: 'FieldTimeOutlined',
+        path: '/admin/charts/dash_board'
+      },
     ]
   },
 ]
